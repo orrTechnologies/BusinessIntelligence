@@ -1,7 +1,0 @@
-c:\users\dylan\documents\visual studio 2013\Projects\BusinessInsights\AlchemyLanguage\bin\Debug\AlchemyLanguage.dll
-c:\users\dylan\documents\visual studio 2013\Projects\BusinessInsights\AlchemyLanguage\bin\Debug\AlchemyLanguage.pdb
-c:\users\dylan\documents\visual studio 2013\Projects\BusinessInsights\AlchemyLanguage\bin\Debug\RestSharp.dll
-c:\users\dylan\documents\visual studio 2013\Projects\BusinessInsights\AlchemyLanguage\bin\Debug\RestSharp.xml
-c:\users\dylan\documents\visual studio 2013\Projects\BusinessInsights\AlchemyLanguage\obj\Debug\AlchemyLanguage.csprojResolveAssemblyReference.cache
-c:\users\dylan\documents\visual studio 2013\Projects\BusinessInsights\AlchemyLanguage\obj\Debug\AlchemyLanguage.dll
-c:\users\dylan\documents\visual studio 2013\Projects\BusinessInsights\AlchemyLanguage\obj\Debug\AlchemyLanguage.pdb
