@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessInsights", "BusinessInsights\BusinessInsights.csproj", "{1D82DA19-1310-4031-A560-ADF48062F4C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlchemyLanguage", "AlchemyLanguage\AlchemyLanguage.csproj", "{A47C17D5-8670-4B37-833B-7DDDF20497EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDevApplication", "ConsoleDevApplication\ConsoleDevApplication.csproj", "{624B9A7C-C09C-4075-9783-F9275F37A2E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D82DA19-1310-4031-A560-ADF48062F4C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D82DA19-1310-4031-A560-ADF48062F4C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D82DA19-1310-4031-A560-ADF48062F4C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D82DA19-1310-4031-A560-ADF48062F4C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A47C17D5-8670-4B37-833B-7DDDF20497EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A47C17D5-8670-4B37-833B-7DDDF20497EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A47C17D5-8670-4B37-833B-7DDDF20497EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A47C17D5-8670-4B37-833B-7DDDF20497EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{624B9A7C-C09C-4075-9783-F9275F37A2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{624B9A7C-C09C-4075-9783-F9275F37A2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{624B9A7C-C09C-4075-9783-F9275F37A2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{624B9A7C-C09C-4075-9783-F9275F37A2E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
