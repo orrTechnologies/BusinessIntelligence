@@ -7,9 +7,8 @@ using RestSharp;
 
 namespace AlchemyLanguage
 {
-    public class AlchemyLanguageService
+    public class AlchemyLanguageService : IAlchemyLanguageService
     {
-        private readonly string _apiKey;
         private readonly IRestClient _client;
 
         /// <summary>
@@ -30,7 +29,6 @@ namespace AlchemyLanguage
             if(String.IsNullOrWhiteSpace(apiKey))
                 throw new ArgumentNullException("Api key must not be null");
 
-            _apiKey = apiKey;
             _client = new RestClient("https://gateway-a.watsonplatform.net/calls/text/");
             _client.AddDefaultParameter(new Parameter() { Name = "apikey", Value = apiKey });
         }

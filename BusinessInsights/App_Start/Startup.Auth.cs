@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System.Configuration;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Facebook;
 using Owin;
+using System.Threading.Tasks;
 
 namespace BusinessInsights
 {
@@ -27,10 +30,29 @@ namespace BusinessInsights
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
+            var facebookOptions = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationOptions
+            {
+                AppId = ConfigurationManager.AppSettings["Facebook_AppId"],
+                AppSecret = ConfigurationManager.AppSettings["Facebook_AppSecret"],
+                Provider = new FacebookAuthenticationProvider()
+                {
+                    OnAuthenticated = (context) =>
+                    {
+                        context.Identity.AddClaim(new System.Security.Claims.Claim("FacebookAccessToken", context.AccessToken));
+                        return Task.FromResult(0);
+                    }
 
+
+                },
+                SignInAsAuthenticationType = DefaultAuthenticationTypes.ExternalCookie,
+                SendAppSecretProof = true
+            };
+            facebookOptions.Scope.Add(ConfigurationManager.AppSettings["Facebook_Scope"]);
+
+            app.UseFacebookAuthentication(facebookOptions);
             //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            //   appId: ConfigurationManager.AppSettings["Facebook_AppId"],
+            //   appSecret: ConfigurationManager.AppSettings["Facebook_AppSecret"]);
 
             //app.UseGoogleAuthentication();
         }
