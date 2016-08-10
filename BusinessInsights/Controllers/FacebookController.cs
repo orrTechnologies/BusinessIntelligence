@@ -11,6 +11,7 @@ using BusinessInsights.Filters;
 using BusinessInsights.Models;
 using Facebook;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace BusinessInsights.Controllers
@@ -19,11 +20,35 @@ namespace BusinessInsights.Controllers
     [FacebookAccessToken]
     public class FacebookController : Controller
     {
+        public UserManager<ApplicationUser> UserManager { get; set; }
+        public ApplicationDbContext ApplicationDbContext { get; set; }
+
+        public FacebookController()
+        {
+            this.ApplicationDbContext = new ApplicationDbContext();
+            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.ApplicationDbContext));
+        }
+
 
         public ActionResult Test()
         {
-            
+            FacebookClient client = new FacebookClient();
+
+            //   Retrieve the existing claims for the user and add the FacebookAccessTokenClaim 
+            var userId = HttpContext.User.Identity.GetUserId();
+
+            IList<Claim> currentClaims = UserManager.GetClaims(userId);
+
+            //check to see if a claim already exists for FacebookAccessToken
+            Claim facebookAccessTokenClaim = currentClaims.First(x => x.Type == "FacebookAccessToken");
+
+            client.AccessToken = facebookAccessTokenClaim.Value;
+           // var result = client.Get("me?fields=first_name");
+            var result = client.Get("user?id=552284611502336");
+            return new ContentResult();
         }
+
+        
 
         //private Uri RedirectUri
         //{
