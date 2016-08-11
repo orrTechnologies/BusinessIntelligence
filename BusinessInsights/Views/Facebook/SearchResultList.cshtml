@@ -1,0 +1,50 @@
+﻿@model IEnumerable<BusinessInsights.Models.FacebookSearchPagesViewModel>
+
+@{
+    ViewBag.Title = "SearchResultList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-sm-12 col-md-4 col-md-push-4">
+        <div class="facebookSearchResultList">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3>Search Results</h3>
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        @foreach (var item in Model)
+                        {
+                            <li class="page-search-result">
+                                <div class="row columns">
+                                    <div class="page-search-result result-picture col-md-4">
+                                        <img src="@item.PictureUrl" />
+                                    </div>
+                                    <div class="page-search-result result-title col-md-8">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <style>
+        .facebookSearchResultList ul {
+            list-style-type: none;
+            padding-left: 0px;
+        }
+        .facebookSearchResultList .panel-body {
+            padding: 0px 5px;
+        } 
+        .page-search-result {
+            padding-bottom: 5px;
+        }
+            .page-search-result:hover {
+                background: #ecf0f7;
+            }
+    </style>

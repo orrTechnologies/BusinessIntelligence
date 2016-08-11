@@ -7,7 +7,7 @@
         /// </summary>
         public string Type { get; set; }
         /// <summary>
-        /// 1 indicates that the sentiment is both positive and negative
+        /// Indicates that the sentiment is both positive and negative
         /// </summary>
         public bool Mixed { get; set; }
 
