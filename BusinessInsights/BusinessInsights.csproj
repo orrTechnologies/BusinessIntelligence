@@ -184,6 +184,7 @@
     <Compile Include="Models\FacebookFriendViewModel.cs" />
     <Compile Include="Models\FacebookPageViewModel.cs" />
     <Compile Include="Models\FacebookProfileViewModel.cs" />
+    <Compile Include="Models\FacebookSearchPagesViewModel.cs" />
     <Compile Include="Models\FacebookViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -236,6 +237,8 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Facebook\Search.cshtml" />
+    <Content Include="Views\Facebook\SearchResultList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

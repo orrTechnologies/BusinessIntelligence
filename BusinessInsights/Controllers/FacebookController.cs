@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using BusinessInsights.Extensions;
 using BusinessInsights.Filters;
 using BusinessInsights.Models;
@@ -13,20 +15,94 @@ using Facebook;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.Facebook;
+using Newtonsoft.Json;
 
 namespace BusinessInsights.Controllers
 {
+    public interface IFacebookService
+    {
+        IFacebookService SetToken(string token);
+        FacebookProfileViewModel Profile(string Id);
+
+        IEnumerable<FacebookSearchPagesViewModel> Search(string query);
+    }
+
+    public class FacebookService : IFacebookService
+    {
+        private readonly FacebookClient _client = new FacebookClient();
+        public FacebookService() { }
+        public IFacebookService SetToken(string token)
+        {
+            _client.AccessToken = token;
+            return this;
+        }
+
+        public FacebookProfileViewModel Profile(string Id)
+        {
+            string request = String.Format("/{0}?fields=about,picture", Id);
+
+            var result = _client.Get(request);
+            return new FacebookProfileViewModel();
+        }
+
+        public IEnumerable<FacebookSearchPagesViewModel> Search(string searchQuery)
+        {
+            string request = String.Format("search?q={0}&type=page&fields=name,picture", searchQuery);
+            dynamic result = _client.Get(request);
+
+            List<FacebookSearchPagesViewModel> searchPages = new List<FacebookSearchPagesViewModel>();
+            foreach (dynamic page in result.data)
+            {
+                searchPages.Add(new FacebookSearchPagesViewModel()
+                {
+                    Name = page.name,
+                    PictureUrl = page.picture.data.url
+                });
+            }
+
+            return searchPages;
+        }
+
+    }
+
+    public class FacebookSearchResultList
+    {
+        public IEnumerable<FacebookSearchPagesViewModel> Data { get; set; }
+    }
+
     [Authorize]
     [FacebookAccessToken]
     public class FacebookController : Controller
     {
-        public UserManager<ApplicationUser> UserManager { get; set; }
-        public ApplicationDbContext ApplicationDbContext { get; set; }
+        private readonly IFacebookService _service;
 
         public FacebookController()
         {
-            this.ApplicationDbContext = new ApplicationDbContext();
-            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.ApplicationDbContext));
+            _service = new FacebookService();
+        }
+
+        public FacebookController(IFacebookService service = null)
+        {
+            _service = service;
+        }
+
+        private IFacebookService GetFacebookService()
+        {
+            return _service.SetToken(HttpContext.Items["access_token"].ToString());
+        }
+
+        [HttpGet]
+        public ActionResult Search(string query)
+        {
+            if (String.IsNullOrWhiteSpace(query))
+                return new ViewResult();
+
+
+            var service = GetFacebookService();
+            IEnumerable<FacebookSearchPagesViewModel> results = service.Search(query);
+
+            return View("SearchResultList", results);
         }
 
 
@@ -34,21 +110,12 @@ namespace BusinessInsights.Controllers
         {
             FacebookClient client = new FacebookClient();
 
-            //   Retrieve the existing claims for the user and add the FacebookAccessTokenClaim 
-            var userId = HttpContext.User.Identity.GetUserId();
-
-            IList<Claim> currentClaims = UserManager.GetClaims(userId);
-
-            //check to see if a claim already exists for FacebookAccessToken
-            Claim facebookAccessTokenClaim = currentClaims.First(x => x.Type == "FacebookAccessToken");
-
-            client.AccessToken = facebookAccessTokenClaim.Value;
-           // var result = client.Get("me?fields=first_name");
+            var token = HttpContext.Items["access_token"].ToString();
             var result = client.Get("user?id=552284611502336");
             return new ContentResult();
         }
 
-        
+
 
         //private Uri RedirectUri
         //{
@@ -189,7 +256,7 @@ namespace BusinessInsights.Controllers
         //    fb.Get("/me");
         //    //Get current user's profile
         //    dynamic myInfo = await fb.GetTaskAsync("me?fields=first_name,last_name,link,locale,email,name,birthday,gender,location,bio,age_range".GraphAPICall(appsecret_proof));
-    
+
         //    //get current picture
         //    dynamic profileImgResult = await fb.GetTaskAsync("{0}/picture?width=100&height=100&redirect=false".GraphAPICall((string)myInfo.id, appsecret_proof));
 
