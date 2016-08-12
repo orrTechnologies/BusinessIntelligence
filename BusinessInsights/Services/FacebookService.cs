@@ -1,43 +1,45 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using BusinessInsights.Models;
 using Facebook;
 
 namespace BusinessInsights.Services
 {
-    public interface IFacebookService
-    {
-        string Profile(string id);
-        void SearchForPage(string name);
-
-        IFacebookService SetToken(string token);
-    }
     public class FacebookService : IFacebookService
     {
-        private FacebookClient _client;
-
-        public FacebookService()
-        {
-            _client = new FacebookClient();
-        }
-
-        public string Profile(string id)
-        {
-            var result = _client.Get("user?id=552284611502336");
-
-            return result.ToString();
-        }
-
-        public void SearchForPage(string name)
-        {
-            
-        }
-
+        private readonly FacebookClient _client = new FacebookClient();
+        public FacebookService() { }
         public IFacebookService SetToken(string token)
         {
             _client.AccessToken = token;
             return this;
         }
+
+        public FacebookProfileViewModel Profile(string Id)
+        {
+            string request = String.Format("/{0}?fields=about,picture", Id);
+
+            var result = _client.Get(request);
+            return new FacebookProfileViewModel();
+        }
+
+        public IEnumerable<FacebookSearchPagesViewModel> Search(string searchQuery)
+        {
+            string request = String.Format("search?q={0}&type=page&fields=name,picture", searchQuery);
+            dynamic result = _client.Get(request);
+
+            List<FacebookSearchPagesViewModel> searchPages = new List<FacebookSearchPagesViewModel>();
+            foreach (dynamic page in result.data)
+            {
+                searchPages.Add(new FacebookSearchPagesViewModel()
+                {
+                    Name = page.name,
+                    PictureUrl = page.picture.data.url
+                });
+            }
+
+            return searchPages;
+        }
+
     }
 }
