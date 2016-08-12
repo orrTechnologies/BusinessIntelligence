@@ -30,21 +30,23 @@ namespace BusinessInsights.Controllers
     [FacebookAccessToken]
     public class FacebookController : Controller
     {
-        private readonly IFacebookService _service;
+        private readonly IFacebookService _sevice;
+        private IFacebookService FacebookService
+        {
+            get
+            {
+                return _sevice.SetToken(HttpContext.Items["access_token"].ToString());
+            }
+        }
 
         public FacebookController()
         {
-            _service = new FacebookService();
+            _sevice = new FacebookService();
         }
 
         public FacebookController(IFacebookService service = null)
         {
-            _service = service;
-        }
-
-        private IFacebookService GetFacebookService()
-        {
-            return _service.SetToken(HttpContext.Items["access_token"].ToString());
+            _sevice = service;
         }
 
         [HttpGet]
@@ -53,24 +55,18 @@ namespace BusinessInsights.Controllers
             if (String.IsNullOrWhiteSpace(query))
                 return new ViewResult();
 
-
-            var service = GetFacebookService();
-            IEnumerable<FacebookSearchPagesViewModel> results = service.Search(query);
-
+            IEnumerable<FacebookSearchPagesViewModel> results = FacebookService.Search(query);
             return View("SearchResultList", results);
         }
 
-
-        public ActionResult Test()
+        #region Dashboard
+        public ActionResult Dashboard(string id)
         {
-            FacebookClient client = new FacebookClient();
-
-            var token = HttpContext.Items["access_token"].ToString();
-            var result = client.Get("user?id=552284611502336");
-            return new ContentResult();
+            IEnumerable<FacebookPostViewModel> taggedPost = FacebookService.Post(id);
+            var sortedPost = taggedPost.Where(p => p.ToName != null);
+            return View("Dashboard", sortedPost);
         }
-
-
+        #endregion
 
         //private Uri RedirectUri
         //{

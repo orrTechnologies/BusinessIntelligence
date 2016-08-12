@@ -7,7 +7,7 @@ namespace BusinessInsights.Services
     {
         IFacebookService SetToken(string token);
         FacebookProfileViewModel Profile(string Id);
-
         IEnumerable<FacebookSearchPagesViewModel> Search(string query);
+        IEnumerable<FacebookPostViewModel> Post(string id);
     }
 }

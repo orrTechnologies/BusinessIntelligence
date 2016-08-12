@@ -1,0 +1,28 @@
+﻿@model IEnumerable<BusinessInsights.Models.FacebookPostViewModel>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dashboard</h2>
+
+@foreach (var item in Model)
+{
+
+    <div class="post">
+        <div class="post post-user-info">
+            <span class="post-user-info post-from-picture">
+                <img src="@item.PictureUrl" />
+            </span>
+            <span class="post-user-info post-from-name">
+                @Html.DisplayFor(modelItem => item.Name)
+            </span>
+        </div>
+
+        <div class="post post-message">
+            @Html.DisplayFor(modelItem => item.Message)
+        </div>
+    </div>
+
+}

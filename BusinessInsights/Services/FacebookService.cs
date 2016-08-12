@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Web.Services.Description;
 using BusinessInsights.Models;
 using Facebook;
 
@@ -25,7 +26,7 @@ namespace BusinessInsights.Services
 
         public IEnumerable<FacebookSearchPagesViewModel> Search(string searchQuery)
         {
-            string request = String.Format("search?q={0}&type=page&fields=name,picture", searchQuery);
+            string request = String.Format("search?q={0}&type=page&fields=name,id,picture", searchQuery);
             dynamic result = _client.Get(request);
 
             List<FacebookSearchPagesViewModel> searchPages = new List<FacebookSearchPagesViewModel>();
@@ -34,12 +35,36 @@ namespace BusinessInsights.Services
                 searchPages.Add(new FacebookSearchPagesViewModel()
                 {
                     Name = page.name,
+                    Id = page.id,
                     PictureUrl = page.picture.data.url
                 });
             }
 
             return searchPages;
         }
+
+        public IEnumerable<FacebookPostViewModel> Post(string id)
+        {
+            string request = String.Format("{0}/feed?fields=to,message,from{{name, picture}}", id);
+            dynamic result = _client.Get(request);
+
+            var posts = new List<FacebookPostViewModel>();
+            foreach (dynamic post in result.data)
+            {
+                var postViewModel = new FacebookPostViewModel()
+                {
+                    Message = post.message,
+                    NameName = post.from.name,
+                    PictureUrl = post.from.picture.data.url
+                };
+                if (post.to.data.name != null)
+                {
+                    postViewModel.ToName = post.to.data.name;
+                }
+                posts.Add(postViewModel);
+            }
+            return posts;
+        } 
 
     }
 }

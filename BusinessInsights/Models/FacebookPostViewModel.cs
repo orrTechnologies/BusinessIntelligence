@@ -5,10 +5,12 @@ using System.Web;
 
 namespace BusinessInsights.Models
 {
-    public class FacebookSearchPagesViewModel
+    public class FacebookPostViewModel
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
+        public string Message { get; set; }
+        public string NameName { get; set; }
+        public string ToName { get; set; }
         public string PictureUrl { get; set; }
+
     }
 }
