@@ -15,18 +15,26 @@ namespace BusinessInsights.Services
             _client.AccessToken = token;
             return this;
         }
-
+        /// <summary>
+        /// Not in use.
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public FacebookProfileViewModel Profile(string Id)
         {
-            string request = String.Format("/{0}?fields=about,picture", Id);
+            var request = String.Format("/{0}?fields=about,picture", Id);
 
-            var result = _client.Get(request);
+            dynamic result = _client.Get(request);
             return new FacebookProfileViewModel();
         }
-
+        /// <summary>
+        /// Searchs facebook pages
+        /// </summary>
+        /// <param name="searchQuery">Term to search</param>
+        /// <returns>A collection of pages that match search query</returns>
         public IEnumerable<FacebookSearchPagesViewModel> Search(string searchQuery)
         {
-            string request = String.Format("search?q={0}&type=page&fields=name,id,picture", searchQuery);
+            var request = String.Format("search?q={0}&type=page&fields=name,id,picture", searchQuery);
             dynamic result = _client.Get(request);
 
             List<FacebookSearchPagesViewModel> searchPages = new List<FacebookSearchPagesViewModel>();
@@ -42,7 +50,11 @@ namespace BusinessInsights.Services
 
             return searchPages;
         }
-
+        /// <summary>
+        /// Loads a list of post on page facebook page.
+        /// </summary>
+        /// <param name="id">Id of facebook page</param>
+        /// <returns>A collection of facebook post</returns>
         public IEnumerable<FacebookPostViewModel> Post(string id)
         {
             string request = String.Format("{0}/feed?fields=to,message,from{{name, picture}}", id);
