@@ -1,4 +1,5 @@
-﻿using System;
+﻿// Facebook class used to map results to .net entities from pluralsight. 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
