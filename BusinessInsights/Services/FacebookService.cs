@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Services.Description;
+using BusinessInsights.Attributes;
 using BusinessInsights.Extensions;
 using BusinessInsights.Models;
 using Facebook;
+using Microsoft.Ajax.Utilities;
 
 namespace BusinessInsights.Services
 {
@@ -21,12 +24,14 @@ namespace BusinessInsights.Services
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public FacebookProfileViewModel Profile(string Id)
+        public async Task<FacebookProfileViewModel> Profile(string Id)
         {
-            var request = String.Format("/{0}?fields=about,picture", Id);
+            var request = String.Format("/{0}?fields=about,picture.height(160)", Id);
 
-            dynamic result = _client.Get(request);
-            return new FacebookProfileViewModel();
+            dynamic result = await _client.GetTaskAsync(request);
+            FacebookProfileViewModel page = DynamicExtension.ToStatic<FacebookProfileViewModel>(result);
+
+            return page;
         }
         /// <summary>
         /// Searchs facebook pages
@@ -56,20 +61,21 @@ namespace BusinessInsights.Services
         /// </summary>
         /// <param name="id">Id of facebook page</param>
         /// <returns>A collection of facebook post</returns>
-        public IEnumerable<FacebookPostViewModel> Post(string id)
+        public async Task<IEnumerable<FacebookPostViewModel>> Post(string id)
         {
-            string request = String.Format("{0}/feed?fields=id,from {{id, name, picture{{url}} }},story,picture,link,name,description,to{{id, name, picture}}", id);
-            dynamic result = _client.Get(request);
+            string request = String.Format("{0}/feed?fields=id,from {{id, name, picture{{url}} }},story,picture,link,name,description,message&limit=100", id);
+            dynamic result = await _client.GetTaskAsync(request);
 
             var posts = new List<FacebookPostViewModel>();
 
-            foreach (dynamic post in result.data)
+            foreach (dynamic resultFeed in result.data)
             {
-                posts.Add(DynamicExtension.ToStatic<FacebookPostViewModel>(post));
+                FacebookPostViewModel post = DynamicExtension.ToStatic<FacebookPostViewModel>(resultFeed);
+                posts.Add(post);
             }
 
             return posts;
-        } 
+        }
 
     }
 }

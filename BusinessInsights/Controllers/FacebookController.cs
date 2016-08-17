@@ -26,27 +26,38 @@ namespace BusinessInsights.Controllers
         public IEnumerable<FacebookSearchPagesViewModel> Data { get; set; }
     }
 
+    public interface IFacebookServiceFactory
+    {
+        IFacebookService CreateService(string token);
+    }
+    public class FacebookServiceFactory : IFacebookServiceFactory
+    {
+        public IFacebookService CreateService(string token)
+        {
+            return new FacebookService().SetToken(token);
+        }
+    }
     [Authorize]
     [FacebookAccessToken]
     public class FacebookController : Controller
     {
-        private readonly IFacebookService _sevice;
+        private readonly IFacebookServiceFactory _serviceFactory;
         private IFacebookService FacebookService
         {
             get
             {
-                return _sevice.SetToken(HttpContext.Items["access_token"].ToString());
+                return _serviceFactory.CreateService(HttpContext.Items["access_token"].ToString());
             }
         }
 
-        public FacebookController()
+        public FacebookController() : this(new FacebookServiceFactory())
         {
-            _sevice = new FacebookService();
+            
         }
 
-        public FacebookController(IFacebookService service = null)
+        public FacebookController(IFacebookServiceFactory serviceFactory = null)
         {
-            _sevice = service;
+            _serviceFactory = serviceFactory;
         }
 
         [HttpGet]
@@ -59,14 +70,32 @@ namespace BusinessInsights.Controllers
             return View("SearchResultList", results);
         }
 
-        #region Dashboard
-        public ActionResult Dashboard(string id)
+        private IEnumerable<FacebookPostViewModel> SampleData()
         {
-            IEnumerable<FacebookPostViewModel> taggedPost = FacebookService.Post(id);
-            var sortedPost = taggedPost.Where(p => p.ToName != null);
-            return View("Dashboard", sortedPost);
+            return new List<FacebookPostViewModel>();
+        } 
+
+        #region Dashboard
+        public async Task<ActionResult> Dashboard(string id)
+        {
+            Task<IEnumerable<FacebookPostViewModel>> taggedPostTask = FacebookService.Post(id);
+            Task<FacebookProfileViewModel> pageTask = FacebookService.Profile(id);
+
+            IEnumerable<FacebookPostViewModel> taggedPost = await taggedPostTask;
+            FacebookProfileViewModel page = await pageTask;
+
+            //Get Post where the page is not the poster (Vistor post), and message is there
+            var sortedPost = taggedPost.Where(p => p.FromId != id && p.Message != null).Take(20);
+
+            var dashboardViewModal = new FacebookDashboardViewModel()
+            {
+                Page = page,
+                Posts = sortedPost
+            };
+            return View("Dashboard", dashboardViewModal);
         }
         #endregion
+
 
         //private Uri RedirectUri
         //{

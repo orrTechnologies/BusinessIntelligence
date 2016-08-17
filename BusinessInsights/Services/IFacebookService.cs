@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BusinessInsights.Models;
 
 namespace BusinessInsights.Services
@@ -6,8 +7,8 @@ namespace BusinessInsights.Services
     public interface IFacebookService
     {
         IFacebookService SetToken(string token);
-        FacebookProfileViewModel Profile(string Id);
+        Task<FacebookProfileViewModel> Profile(string Id);
         IEnumerable<FacebookSearchPagesViewModel> Search(string query);
-        IEnumerable<FacebookPostViewModel> Post(string id);
+        Task<IEnumerable<FacebookPostViewModel>> Post(string id);
     }
 }
