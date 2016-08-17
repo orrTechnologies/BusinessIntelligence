@@ -19,6 +19,7 @@ namespace BusinessInsights.Models
         [FacebookMapping("name")]
         public string Fullname { get; set; }
 
+        [FacebookMapping("url", parent = "picture")]
         public string ImageURL { get; set; }
 
         [FacebookMapping("link")]

@@ -9,21 +9,25 @@
         <div class="facebookSearchResultList">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3>Search Results</h3>
+                    <p>Search Results</p>
+                    @Html.Partial("_SearchBox")
                 </div>
                 <div class="panel-body">
                     <ul>
                         @foreach (var item in Model)
                         {
                             <li class="page-search-result">
-                                <div class="row columns">
-                                    <div class="page-search-result result-picture col-md-4">
-                                        <img src="@item.PictureUrl" />
+
+                                <a href="/facebook/dashboard/?Id=@item.Id">
+                                    <div>
+                                        <span class="page-search-result result-picture">
+                                            <img src="@item.PictureUrl" />
+                                        </span>
+                                        <span class="page-search-result result-title">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </span>
                                     </div>
-                                    <div class="page-search-result result-title col-md-8">
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </div>
-                                </div>
+                                </a>
                             </li>
                         }
                     </ul>
@@ -33,18 +37,34 @@
     </div>
 </div>
 
-    <style>
-        .facebookSearchResultList ul {
-            list-style-type: none;
-            padding-left: 0px;
-        }
-        .facebookSearchResultList .panel-body {
-            padding: 0px 5px;
-        } 
-        .page-search-result {
-            padding-bottom: 5px;
-        }
-            .page-search-result:hover {
-                background: #ecf0f7;
-            }
-    </style>
+<style>
+    .facebookSearchResultList ul {
+        list-style-type: none;
+        padding-left: 0px;
+    }
+
+    .facebookSearchResultList .panel-body {
+        padding: 0px 5px;
+    }
+
+    .page-search-result {
+        padding-bottom: 5px;
+    }
+    .page-search-result a {
+        color: #000;
+    }
+    .page-search-result a:hover {
+         text-decoration: none;
+     }
+    .page-search-result:hover {
+        background: #ecf0f7;
+    }
+    .page-search-result.result-picture {
+        height: 36px;
+        width:36px;
+    }
+    .page-search-result.result-title {
+        
+    }
+</style>
+

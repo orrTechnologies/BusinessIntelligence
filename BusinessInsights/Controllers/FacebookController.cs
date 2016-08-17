@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 using BusinessInsights.Extensions;
 using BusinessInsights.Filters;
 using BusinessInsights.Models;
+using BusinessInsights.Services;
 using Facebook;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -20,76 +21,43 @@ using Newtonsoft.Json;
 
 namespace BusinessInsights.Controllers
 {
-    public interface IFacebookService
-    {
-        IFacebookService SetToken(string token);
-        FacebookProfileViewModel Profile(string Id);
-
-        IEnumerable<FacebookSearchPagesViewModel> Search(string query);
-    }
-
-    public class FacebookService : IFacebookService
-    {
-        private readonly FacebookClient _client = new FacebookClient();
-        public FacebookService() { }
-        public IFacebookService SetToken(string token)
-        {
-            _client.AccessToken = token;
-            return this;
-        }
-
-        public FacebookProfileViewModel Profile(string Id)
-        {
-            string request = String.Format("/{0}?fields=about,picture", Id);
-
-            var result = _client.Get(request);
-            return new FacebookProfileViewModel();
-        }
-
-        public IEnumerable<FacebookSearchPagesViewModel> Search(string searchQuery)
-        {
-            string request = String.Format("search?q={0}&type=page&fields=name,picture", searchQuery);
-            dynamic result = _client.Get(request);
-
-            List<FacebookSearchPagesViewModel> searchPages = new List<FacebookSearchPagesViewModel>();
-            foreach (dynamic page in result.data)
-            {
-                searchPages.Add(new FacebookSearchPagesViewModel()
-                {
-                    Name = page.name,
-                    PictureUrl = page.picture.data.url
-                });
-            }
-
-            return searchPages;
-        }
-
-    }
-
     public class FacebookSearchResultList
     {
         public IEnumerable<FacebookSearchPagesViewModel> Data { get; set; }
     }
 
+    public interface IFacebookServiceFactory
+    {
+        IFacebookService CreateService(string token);
+    }
+    public class FacebookServiceFactory : IFacebookServiceFactory
+    {
+        public IFacebookService CreateService(string token)
+        {
+            return new FacebookService().SetToken(token);
+        }
+    }
     [Authorize]
     [FacebookAccessToken]
     public class FacebookController : Controller
     {
-        private readonly IFacebookService _service;
-
-        public FacebookController()
+        private readonly IFacebookServiceFactory _serviceFactory;
+        private IFacebookService FacebookService
         {
-            _service = new FacebookService();
+            get
+            {
+                return _serviceFactory.CreateService(HttpContext.Items["access_token"].ToString());
+            }
         }
 
-        public FacebookController(IFacebookService service = null)
+        public FacebookController() : this(new FacebookServiceFactory())
         {
-            _service = service;
+            
         }
 
-        private IFacebookService GetFacebookService()
+        public FacebookController(IFacebookServiceFactory serviceFactory = null)
         {
-            return _service.SetToken(HttpContext.Items["access_token"].ToString());
+            _serviceFactory = serviceFactory;
         }
 
         [HttpGet]
@@ -98,23 +66,35 @@ namespace BusinessInsights.Controllers
             if (String.IsNullOrWhiteSpace(query))
                 return new ViewResult();
 
-
-            var service = GetFacebookService();
-            IEnumerable<FacebookSearchPagesViewModel> results = service.Search(query);
-
+            IEnumerable<FacebookSearchPagesViewModel> results = FacebookService.Search(query);
             return View("SearchResultList", results);
         }
 
-
-        public ActionResult Test()
+        private IEnumerable<FacebookPostViewModel> SampleData()
         {
-            FacebookClient client = new FacebookClient();
+            return new List<FacebookPostViewModel>();
+        } 
 
-            var token = HttpContext.Items["access_token"].ToString();
-            var result = client.Get("user?id=552284611502336");
-            return new ContentResult();
+        #region Dashboard
+        public async Task<ActionResult> Dashboard(string id)
+        {
+            Task<IEnumerable<FacebookPostViewModel>> taggedPostTask = FacebookService.Post(id);
+            Task<FacebookProfileViewModel> pageTask = FacebookService.Profile(id);
+
+            IEnumerable<FacebookPostViewModel> taggedPost = await taggedPostTask;
+            FacebookProfileViewModel page = await pageTask;
+
+            //Get Post where the page is not the poster (Vistor post), and message is there
+            var sortedPost = taggedPost.Where(p => p.FromId != id && p.Message != null).Take(20);
+
+            var dashboardViewModal = new FacebookDashboardViewModel()
+            {
+                Page = page,
+                Posts = sortedPost
+            };
+            return View("Dashboard", dashboardViewModal);
         }
-
+        #endregion
 
 
         //private Uri RedirectUri

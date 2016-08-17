@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDevApplication", "Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook", "Facebook\Facebook.csproj", "{F8768809-9A77-4B27-AAE9-77CF1513B464}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessInsights.Data", "BusinessInsights.Data\BusinessInsights.Data.csproj", "{61EB9EFD-DD77-4E07-A649-B567383EA498}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F8768809-9A77-4B27-AAE9-77CF1513B464}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8768809-9A77-4B27-AAE9-77CF1513B464}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8768809-9A77-4B27-AAE9-77CF1513B464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61EB9EFD-DD77-4E07-A649-B567383EA498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61EB9EFD-DD77-4E07-A649-B567383EA498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61EB9EFD-DD77-4E07-A649-B567383EA498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61EB9EFD-DD77-4E07-A649-B567383EA498}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
