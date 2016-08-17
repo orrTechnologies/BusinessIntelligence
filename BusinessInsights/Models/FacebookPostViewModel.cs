@@ -21,6 +21,9 @@ namespace BusinessInsights.Models
 
         [FacebookMapping("url", parent = "from")]
         public string FromPictureUrl { get; set; }
+        
+        [FacebookMapping("name", parent = "to")]
+        public string ToName { get; set; }
 
         [FacebookMapping("story")]
         public string Story { get; set; }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Services.Description;
+using BusinessInsights.Extensions;
 using BusinessInsights.Models;
 using Facebook;
 
@@ -57,24 +58,16 @@ namespace BusinessInsights.Services
         /// <returns>A collection of facebook post</returns>
         public IEnumerable<FacebookPostViewModel> Post(string id)
         {
-            string request = String.Format("{0}/feed?fields=to,message,from{{name, picture}}", id);
-            var result = _client.Get(request);
+            string request = String.Format("{0}/feed?fields=id,from {{id, name, picture{{url}} }},story,picture,link,name,description,to{{id, name, picture}}", id);
+            dynamic result = _client.Get(request);
 
             var posts = new List<FacebookPostViewModel>();
-            //foreach (dynamic post in result.data)
-            //{
-            //    var postViewModel = new FacebookPostViewModel()
-            //    {
-            //        Message = post.message,
-            //        NameName = post.from.name,
-            //        PictureUrl = post.from.picture.data.url
-            //    };
-            //    if (post.to.data.name != null)
-            //    {
-            //        postViewModel.ToName = post.to.data.name;
-            //    }
-            //    posts.Add(postViewModel);
-            //}
+
+            foreach (dynamic post in result.data)
+            {
+                posts.Add(DynamicExtension.ToStatic<FacebookPostViewModel>(post));
+            }
+
             return posts;
         } 
 
