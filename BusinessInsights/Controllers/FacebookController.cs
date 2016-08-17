@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using BusinessInsights.Extensions;
+using BusinessInsights.Factories;
 using BusinessInsights.Filters;
 using BusinessInsights.Models;
 using BusinessInsights.Services;
@@ -21,22 +22,6 @@ using Newtonsoft.Json;
 
 namespace BusinessInsights.Controllers
 {
-    public class FacebookSearchResultList
-    {
-        public IEnumerable<FacebookSearchPagesViewModel> Data { get; set; }
-    }
-
-    public interface IFacebookServiceFactory
-    {
-        IFacebookService CreateService(string token);
-    }
-    public class FacebookServiceFactory : IFacebookServiceFactory
-    {
-        public IFacebookService CreateService(string token)
-        {
-            return new FacebookService().SetToken(token);
-        }
-    }
     [Authorize]
     [FacebookAccessToken]
     public class FacebookController : Controller

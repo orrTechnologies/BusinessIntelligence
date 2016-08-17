@@ -172,7 +172,10 @@
     <Compile Include="Attributes\FacebookMappingAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FacebookController.cs" />
+    <Compile Include="Models\FacebookSearchResultList.cs" />
+    <Compile Include="Factories\FacebookServiceFactory.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Factories\IFacebookServiceFactory.cs" />
     <Compile Include="Extensions\DynamicExtension.cs" />
     <Compile Include="Extensions\HtmlHelper.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
