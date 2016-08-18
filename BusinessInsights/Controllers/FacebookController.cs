@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
+using AlchemyLanguage;
 using BusinessInsights.Extensions;
 using BusinessInsights.Factories;
 using BusinessInsights.Filters;
@@ -27,6 +28,8 @@ namespace BusinessInsights.Controllers
     public class FacebookController : Controller
     {
         private readonly IFacebookServiceFactory _serviceFactory;
+        private readonly IAlchemyLanguageClient _alchemyClient;
+
         private IFacebookService FacebookService
         {
             get
@@ -35,14 +38,15 @@ namespace BusinessInsights.Controllers
             }
         }
 
-        public FacebookController() : this(new FacebookServiceFactory())
+        public FacebookController() : this(new FacebookServiceFactory(), new MockAlchemyClient())
         {
             
         }
 
-        public FacebookController(IFacebookServiceFactory serviceFactory = null)
+        public FacebookController(IFacebookServiceFactory serviceFactory = null, IAlchemyLanguageClient alchemyClient = null)
         {
             _serviceFactory = serviceFactory;
+            _alchemyClient = alchemyClient;
         }
 
         [HttpGet]
@@ -70,12 +74,35 @@ namespace BusinessInsights.Controllers
             FacebookProfileViewModel page = await pageTask;
 
             //Get Post where the page is not the poster (Vistor post), and message is there
-            var sortedPost = taggedPost.Where(p => p.FromId != id && p.Message != null).Take(20);
+            var sortedPost =
+                taggedPost.Where(p => p.FromId != id && p.Message != null)
+                    .Take(20);
+
+            List<FacebookPostAnalysed> analysedPosts = new List<FacebookPostAnalysed>();
+
+            //Use alchemy Language to analyse post. Convert to view models.
+            foreach (FacebookPostViewModel post in sortedPost)
+            {
+                DocSentiment sentiment = _alchemyClient.GetSentiment(post.Message).Sentiment;
+                var analysedPost = new FacebookPostAnalysed()
+                {
+                    Post = post,
+                    Sentiment = new FacebookPostSentimentViewModel()
+                    {
+                        Mixed = sentiment.Mixed,
+                        Score = sentiment.Score,
+                        Type = sentiment.Sentiment
+                    }
+                };
+                analysedPost.Post = post;
+
+                analysedPosts.Add(analysedPost);
+            }
 
             var dashboardViewModal = new FacebookDashboardViewModel()
             {
                 Page = page,
-                Posts = sortedPost
+                Posts = analysedPosts
             };
             return View("Dashboard", dashboardViewModal);
         }

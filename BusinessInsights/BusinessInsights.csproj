@@ -172,6 +172,7 @@
     <Compile Include="Attributes\FacebookMappingAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FacebookController.cs" />
+    <Compile Include="Models\FacebookPostAnalysed.cs" />
     <Compile Include="Models\FacebookPostSentimentViewModel.cs" />
     <Compile Include="Models\FacebookSearchResultList.cs" />
     <Compile Include="Factories\FacebookServiceFactory.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\FacebookService.cs" />
     <Compile Include="Services\IFacebookService.cs" />
+    <Compile Include="Services\MockAlchemyClient.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

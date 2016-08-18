@@ -8,6 +8,6 @@ namespace BusinessInsights.Models
     public class FacebookDashboardViewModel
     {
         public FacebookProfileViewModel Page { get; set; }
-        public IEnumerable<FacebookPostViewModel> Posts { get; set; } 
+        public IEnumerable<FacebookPostAnalysed> Posts { get; set; } 
     }
 }

@@ -1,16 +1,48 @@
-﻿@model BusinessInsights.Models.FacebookPostViewModel
-
+﻿@using AlchemyLanguage
+@using BusinessInsights.Models
+@model BusinessInsights.Models.FacebookPostAnalysed
+@{ FacebookPostViewModel post = Model.Post;}
+@{ FacebookPostSentimentViewModel sentiment = Model.Sentiment;}
 <div class="post">
     <div class="post-user-info">
         <span class="post-user-info post-from-picture">
-            <img src="@Model.FromPictureUrl" />
+            <img src="@post.FromPictureUrl" />
         </span>
         <span class="post-user-info post-from-name">
-            @Html.DisplayFor(modelItem => Model.FromName)
+            @Html.DisplayFor(modelItem => post.FromName)
+        </span>
+        <span class="post-sentiment-info">
+            <span class="post-sentiment score">
+                Score: @Html.DisplayFor(modelItem => sentiment.Score)
+            </span>
+            <span class="post-sentiment icon">
+                @if (sentiment.Type == SentimentType.Positive)
+                {
+                    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                }
+                else if (sentiment.Type == SentimentType.Negative)
+                {
+                    <span class="glyphicon glyphicon-download aria-hidden=" true"></span>
+                }
+            </span>
         </span>
     </div>
 
     <div class="post-message">
-        @Html.DisplayFor(modelItem => Model.Message)
+        @Html.DisplayFor(modelItem => post.Message)
     </div>
 </div>
+
+<style>
+    .post-sentiment-info {
+        float: right;
+        margin-right: 10px;
+    }
+    .post-sentiment .glyphicon-upload {
+        color: green;
+    }
+    .post-sentiment .glyphicon-download {
+        color: red;
+    }
+
+</style>
