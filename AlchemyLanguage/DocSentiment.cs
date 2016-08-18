@@ -3,6 +3,24 @@
     public class DocSentiment
     {
         /// <summary>
+        /// Returns enum version of the type property
+        /// </summary>
+        public SentimentType Sentiment
+        {
+            get {
+                switch (Type)
+                {
+                    case "positive":
+                        return SentimentType.Positive;
+                    case "negative":
+                        return SentimentType.Negative;
+                    case "neutral":
+                        return SentimentType.Neutral;
+                } 
+            }
+        }
+
+        /// <summary>
         /// Sentiment polarity: Posity, negative, or neutral
         /// </summary>
         public string Type { get; set; }
@@ -16,5 +34,11 @@
         /// </summary>
         public double Score { get; set; }
 
+        public enum SentimentType
+        {
+            Positive,
+            Negative,
+            Neutral
+        }
     }
 }
