@@ -16,6 +16,8 @@
                         return SentimentType.Negative;
                     case "neutral":
                         return SentimentType.Neutral;
+                    default:
+                        return SentimentType.Neutral;
                 } 
             }
         }
@@ -34,11 +36,5 @@
         /// </summary>
         public double Score { get; set; }
 
-        public enum SentimentType
-        {
-            Positive,
-            Negative,
-            Neutral
-        }
     }
 }

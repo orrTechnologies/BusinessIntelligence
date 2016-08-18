@@ -7,7 +7,7 @@ using RestSharp;
 
 namespace AlchemyLanguage
 {
-    public class AlchemyLanguageService : IAlchemyLanguageService
+    public class AlchemyLanguageClient : IAlchemyLanguageClient
     {
         private readonly IRestClient _client;
 
@@ -15,7 +15,7 @@ namespace AlchemyLanguage
         /// Allows for dependency injection if needed. 
         /// </summary>
         /// <param name="client"></param>
-        public AlchemyLanguageService(IRestClient client)
+        public AlchemyLanguageClient(IRestClient client)
         {
             _client = client;
         }
@@ -24,7 +24,7 @@ namespace AlchemyLanguage
        /// This is the constructor that should be used.
        /// </summary>
         /// <param name="apiKey">bluemix api key</param>
-        public AlchemyLanguageService(string apiKey)
+        public AlchemyLanguageClient(string apiKey)
         {
             if(String.IsNullOrWhiteSpace(apiKey))
                 throw new ArgumentNullException("Api key must not be null");

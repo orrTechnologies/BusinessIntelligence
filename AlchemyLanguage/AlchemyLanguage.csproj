@@ -44,10 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocSentiment.cs" />
-    <Compile Include="IAlchemyLanguageService.cs" />
+    <Compile Include="IAlchemyLanguage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AlchemyLanguageService.cs" />
+    <Compile Include="AlchemyLanguage.cs" />
     <Compile Include="SentimentAnalysis.cs" />
+    <Compile Include="SentimentType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

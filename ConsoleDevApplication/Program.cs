@@ -11,7 +11,7 @@ namespace ConsoleDevApplication
     {
         static void Main(string[] args)
         {
-            AlchemyLanguageService service = new AlchemyLanguageService("0ea4a12f30bf7745d366f69a95deff2c478d6257");
+            AlchemyLanguageClient service = new AlchemyLanguageClient("0ea4a12f30bf7745d366f69a95deff2c478d6257");
 
             var response =
                 service.GetSentiment(

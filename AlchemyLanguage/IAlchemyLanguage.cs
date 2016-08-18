@@ -1,6 +1,6 @@
 ﻿namespace AlchemyLanguage
 {
-    public interface IAlchemyLanguageService
+    public interface IAlchemyLanguageClient
     {
         /// <summary>
         /// Returns a SentimentAnalysis for the text. 
