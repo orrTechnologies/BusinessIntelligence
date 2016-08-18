@@ -1,0 +1,16 @@
+﻿@model BusinessInsights.Models.FacebookPostViewModel
+
+<div class="post">
+    <div class="post-user-info">
+        <span class="post-user-info post-from-picture">
+            <img src="@Model.PictureUrl" />
+        </span>
+        <span class="post-user-info post-from-name">
+            @Html.DisplayFor(modelItem => Model.FromName)
+        </span>
+    </div>
+
+    <div class="post-message">
+        @Html.DisplayFor(modelItem => Model.Message)
+    </div>
+</div>

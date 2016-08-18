@@ -16,20 +16,7 @@
     <div class="col-sm-12 col-md-6">
         @foreach (var item in Model.Posts)
         {
-            <div class="post">
-                <div class="post-user-info">
-                    <span class="post-user-info post-from-picture">
-                        <img src="@item.PictureUrl" />
-                    </span>
-                    <span class="post-user-info post-from-name">
-                        @Html.DisplayFor(modelItem => item.FromName)
-                    </span>
-                </div>
-
-                <div class="post-message">
-                    @Html.DisplayFor(modelItem => item.Message)
-                </div>
-            </div>
+            @Html.Partial("_Post", item)
         }
 
     </div>

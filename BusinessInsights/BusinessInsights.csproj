@@ -251,6 +251,7 @@
     <Content Include="Views\Facebook\SearchResultList.cshtml" />
     <Content Include="Views\Facebook\Dashboard.cshtml" />
     <Content Include="Views\Facebook\_SearchBox.cshtml" />
+    <Content Include="Views\Facebook\_Post.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
