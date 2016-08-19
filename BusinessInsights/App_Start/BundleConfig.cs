@@ -38,7 +38,8 @@ namespace BusinessInsights
 
             bundles.Add(new StyleBundle("~/Content/sbadmin").Include(
                       "~/Content/sbadmin/sb-admin-2.css",
-                      "~/Content/sbadmin/metisMenu.css"
+                      "~/Content/sbadmin/metisMenu.css", 
+                      "~/Content/font-awesome.css"
     ));
 
         }
