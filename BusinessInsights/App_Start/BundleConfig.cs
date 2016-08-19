@@ -23,6 +23,11 @@ namespace BusinessInsights
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/sbadmin")
+                      .Include("~/Scripts/sb-admin-2.js",
+                    "~/Scripts/metisMenu.js",
+                    "~/Scripts/bootstrap.js"));
+
             bundles.Add(new StyleBundle("~/bundles/businessinsights").Include(
                 "~/Scripts/businessinsights.js"));
             
@@ -30,6 +35,12 @@ namespace BusinessInsights
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/sbadmin").Include(
+                      "~/Content/sbadmin/sb-admin-2.css",
+                      "~/Content/sbadmin/metisMenu.css"
+    ));
+
         }
     }
 }
