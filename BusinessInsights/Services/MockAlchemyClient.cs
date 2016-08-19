@@ -9,7 +9,7 @@ namespace BusinessInsights.Services
 {
     public class MockAlchemyClient : IAlchemyLanguageClient
     {
-        private static Random _rnd = new Random();
+        private static readonly Random _rnd = new Random();
         public SentimentAnalysis GetSentiment(string text)
         {
             var docSentiment = new DocSentiment();
@@ -21,7 +21,6 @@ namespace BusinessInsights.Services
 
             docSentiment.Score = Math.Round((_rnd.NextDouble() * (1.0 - (-1.0)) + -1.0), 2);
             sentimentAnalysis.Sentiment = docSentiment;
-
             sentimentAnalysis.Sentiment.Type = _rnd.Next(-2, 4) > 1 ? "positive" : "negative";
 
             return sentimentAnalysis;

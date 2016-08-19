@@ -9,6 +9,7 @@ namespace AlchemyLanguage
 {
     public class AlchemyLanguageClient : IAlchemyLanguageClient
     {
+        private readonly string _apiKey;
         private readonly IRestClient _client;
 
         /// <summary>
@@ -26,7 +27,8 @@ namespace AlchemyLanguage
         /// <param name="apiKey">bluemix api key</param>
         public AlchemyLanguageClient(string apiKey)
         {
-            if(String.IsNullOrWhiteSpace(apiKey))
+           _apiKey = apiKey;
+           if(String.IsNullOrWhiteSpace(apiKey))
                 throw new ArgumentNullException("Api key must not be null");
 
             _client = new RestClient("https://gateway-a.watsonplatform.net/calls/text/");
@@ -42,8 +44,10 @@ namespace AlchemyLanguage
         {
             var request = new RestRequest("TextGetTextSentiment");
             request.AddParameter("text", text);
+            request.AddParameter("apikey", _apiKey);
 
             var response = _client.Execute<SentimentAnalysis>(request);
+            var url = _client.BuildUri(request);
             var content = response.Data;
 
             return content;
