@@ -1,0 +1,30 @@
+﻿@model BusinessInsights.Models.FacebookDonutChartViewModel
+
+<div class="col-lg-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <i class="fa fa-bar-chart-o fa-fw"></i> Post Sentiment By Type
+        </div>
+        <div class="panel-body">
+            <div id="morris-donut-chart"></div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+</div>
+    <script>
+
+        var donutChartParams = {
+            element: 'morris-donut-chart',
+            data: [{
+                label: "Positive Post",
+                value: '@Model.PositivePostCount'
+            }, {
+                label: "Negatvie Post",
+                value: '@Model.NegativePostCount'
+            }, {
+                label: "Neutral Post",
+                value: '@Model.NeutralPostCount'
+            }],
+            resize: true
+        };
+    </script>

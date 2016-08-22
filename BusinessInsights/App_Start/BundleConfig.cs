@@ -30,7 +30,7 @@ namespace BusinessInsights
                     "~/Scripts/morris.js",
                     "~/Scripts/raphael.js"));
 
-            bundles.Add(new StyleBundle("~/bundles/businessinsights").Include(
+            bundles.Add(new ScriptBundle("~/bundles/businessinsights").Include(
                 "~/Scripts/businessinsights.js"));
             
 

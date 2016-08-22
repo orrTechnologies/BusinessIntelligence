@@ -7,5 +7,6 @@
         }
     });
 
-
+        Morris.Donut(donutChartParams);
+        Morris.Area(areaChartParams);
 });

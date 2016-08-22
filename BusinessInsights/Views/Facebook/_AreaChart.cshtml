@@ -3,7 +3,7 @@
 <div class="col-lg-8">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+            <i class="fa fa-bar-chart-o fa-fw"></i> Post Sentiment By Day
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
@@ -18,14 +18,15 @@
 
 <script>
     var areaChartData = @Html.Raw(@Model);
-    area = {
+    areaChartParams = {
         element: 'facebooks-area-chart',
         data: areaChartData,
         xkey: 'Day',
         ykeys: ['PositivePostCount', 'NegativePostCount'],
-        labels: ['Positive Post', 'Negative Post']
+        labels: ['Positive Post', 'Negative Post'],
+        pointSize: 2,
+        hideHover: 'auto',
+        resize: true
     }
-    window.onload = function() {
-        Morris.Area(area);
-    };
+
 </script>
