@@ -63,7 +63,7 @@ namespace BusinessInsights.Services
         /// <returns>A collection of facebook post</returns>
         public async Task<IEnumerable<FacebookPostViewModel>> Post(string id)
         {
-            string request = String.Format("{0}/feed?fields=id,from {{id, name, picture{{url}} }},story,picture,link,name,description,message&limit=100", id);
+            string request = String.Format("{0}/feed?fields=id,from {{id, name, picture{{url}} }},story,picture,link,name,description,message,created_time&limit=100", id);
             dynamic result = await _client.GetTaskAsync(request);
 
             var posts = new List<FacebookPostViewModel>();

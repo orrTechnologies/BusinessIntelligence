@@ -9,7 +9,7 @@ namespace BusinessInsights.Models
     {
         public FacebookProfileViewModel Page { get; set; }
         public IEnumerable<FacebookPostAnalysed> Posts { get; set; }
-        public IEnumerable<FacebookAreaChartViewModel> AreaChartDataViewModel { get; set; }
+        public string AreaChartSerializedData { get; set; }
         public FacebookDonutChartViewModel DonoutChartDataViewModel { get; set; }
 
     }

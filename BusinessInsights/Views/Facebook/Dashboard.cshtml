@@ -6,8 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="row">
-    @Html.Partial("_DonutChart", @Model.DonoutChartDataViewModel)
-    @Html.Partial("_AreaChart", @Model.AreaChartDataViewModel)
+    @Html.Partial("_AreaChart", @Model.AreaChartSerializedData)
 </div>
 
 <div class="row">

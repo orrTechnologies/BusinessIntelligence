@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BusinessInsights.Models.FacebookAreaChartViewModel>
+﻿@model string
 
 <div class="col-lg-8">
     <div class="panel panel-default">
@@ -17,10 +17,15 @@
 
 
 <script>
-    var area = {
+    var areaChartData = @Html.Raw(@Model);
+    area = {
         element: 'facebooks-area-chart',
-        data: [
-
-        ]
+        data: areaChartData,
+        xkey: 'Day',
+        ykeys: ['PositivePostCount', 'NegativePostCount'],
+        labels: ['Positive Post', 'Negative Post']
     }
+    window.onload = function() {
+        Morris.Area(area);
+    };
 </script>

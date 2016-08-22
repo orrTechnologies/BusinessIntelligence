@@ -123,28 +123,35 @@ namespace BusinessInsights.Controllers
             IEnumerable<IGrouping<DateTime, FacebookPostAnalysed>> analysedPostByDay =
                 analysedPosts.GroupBy(analysed => analysed.Post.CreatedTime.Date);
 
-            var areaChartData = analysedPostByDay.Select(post => new FacebookAreaChartViewModel()
-            {
-                Day = post.Key, 
-                NegativePostCount = post.Count(p => p.Sentiment.Type == SentimentType.Negative), 
-                NeutralPostCount = post.Count(p => p.Sentiment.Type == SentimentType.Neutral), 
-                PositivePostCount = post.Count(p => p.Sentiment.Type == SentimentType.Positive)
-            }).ToList();
-
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("asdf{0}", 1);
-            #endregion
+            var areaChartData = GetSerializedAreaChartData(analysedPostByDay);
+#endregion
             var dashboardViewModal = new FacebookDashboardViewModel()
             {
                 Page = page,
                 Posts = analysedPosts,
-                AreaChartDataViewModel = areaChartData,
+                AreaChartSerializedData = areaChartData,
                 DonoutChartDataViewModel = donutChartData
             };
             return View("Dashboard", dashboardViewModal);
         }
 
+        [ChildActionOnly]
+        private string GetSerializedAreaChartData(IEnumerable<IGrouping<DateTime, FacebookPostAnalysed>> data )
+        {
+            List<FacebookAreaChartViewModel> chartDataObject = new List<FacebookAreaChartViewModel>();
+            foreach(var postGroup in data)
+            {
+                var chartGroup = new FacebookAreaChartViewModel()
+                {
+                    Day = postGroup.Key,
+                    PositivePostCount = postGroup.Count(p => p.Sentiment.Type == SentimentType.Positive),
+                    NegativePostCount = postGroup.Count(p => p.Sentiment.Type == SentimentType.Negative),
+                    NeutralPostCount = postGroup.Count(p => p.Sentiment.Type == SentimentType.Neutral),
+                };
+                chartDataObject.Add(chartGroup);
+            }
+            return JsonConvert.SerializeObject(chartDataObject.ToArray());
+        }
         #endregion
     }
 }
