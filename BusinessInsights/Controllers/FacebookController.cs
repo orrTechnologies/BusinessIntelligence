@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using AlchemyLanguage;
 using BusinessInsights.Extensions;
@@ -37,6 +39,7 @@ namespace BusinessInsights.Controllers
                 return _serviceFactory.CreateService(HttpContext.Items["access_token"].ToString());
             }
         }
+ 
         //new AlchemyLanguageClient("0ea4a12f30bf7745d366f69a95deff2c478d6257")
         public FacebookController()
             : this(new FacebookServiceFactory(), new MockAlchemyClient())
@@ -72,6 +75,7 @@ namespace BusinessInsights.Controllers
             Task<FacebookProfileViewModel> pageTask = FacebookService.Profile(id);
 
             IEnumerable<FacebookPostViewModel> taggedPost = await taggedPostTask;
+            //Page: Get page view models directly from facebookService
             FacebookProfileViewModel page = await pageTask;
 
             //Get Post where the page is not the poster (Vistor post), and message is there
@@ -81,7 +85,7 @@ namespace BusinessInsights.Controllers
 
             List<FacebookPostAnalysed> analysedPosts = new List<FacebookPostAnalysed>();
 
-            //Use alchemy Language to analyse post. Convert to view models.
+            //Post: Use alchemy Language to analyse post. Convert to view models.
             foreach (FacebookPostViewModel post in sortedPost)
             {
                 DocSentiment sentiment = _alchemyClient.GetSentiment(post.Message).Sentiment;
@@ -99,14 +103,48 @@ namespace BusinessInsights.Controllers
 
                 analysedPosts.Add(analysedPost);
             }
+#region Charts
+            var js = new JavaScriptSerializer();
+            //ChartData
 
+            //Donut Chart Data:
+            var positivePostCount = analysedPosts.Count(p => p.Sentiment.Type == SentimentType.Positive);
+            var negativePostCount = analysedPosts.Count(p => p.Sentiment.Type == SentimentType.Negative);
+            var neutralPostCount = analysedPosts.Count(p => p.Sentiment.Type == SentimentType.Neutral);
+
+            FacebookDonutChartViewModel donutChartData = new FacebookDonutChartViewModel()
+            {
+                PositivePostCount = positivePostCount,
+                NegativePostCount = negativePostCount,
+                NeutralPostCount = neutralPostCount
+            }; 
+
+            //Area Chart Data
+            IEnumerable<IGrouping<DateTime, FacebookPostAnalysed>> analysedPostByDay =
+                analysedPosts.GroupBy(analysed => analysed.Post.CreatedTime.Date);
+
+            var areaChartData = analysedPostByDay.Select(post => new FacebookAreaChartViewModel()
+            {
+                Day = post.Key, 
+                NegativePostCount = post.Count(p => p.Sentiment.Type == SentimentType.Negative), 
+                NeutralPostCount = post.Count(p => p.Sentiment.Type == SentimentType.Neutral), 
+                PositivePostCount = post.Count(p => p.Sentiment.Type == SentimentType.Positive)
+            }).ToList();
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("asdf{0}", 1);
+            #endregion
             var dashboardViewModal = new FacebookDashboardViewModel()
             {
                 Page = page,
-                Posts = analysedPosts
+                Posts = analysedPosts,
+                AreaChartDataViewModel = areaChartData,
+                DonoutChartDataViewModel = donutChartData
             };
             return View("Dashboard", dashboardViewModal);
         }
+
         #endregion
     }
 }
