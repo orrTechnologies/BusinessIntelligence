@@ -183,8 +183,6 @@
     <Compile Include="Factories\FacebookServiceFactory.cs" />
     <Compile Include="Factories\IFacebookServiceFactory.cs" />
     <Compile Include="Extensions\DynamicExtension.cs" />
-    <Compile Include="Extensions\HtmlHelper.cs" />
-    <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="Filters\FacebookAccessTokenAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
