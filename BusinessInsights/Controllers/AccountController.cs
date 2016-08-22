@@ -294,6 +294,7 @@ namespace BusinessInsights.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        await StoreFacebookAuthToken(user);
                         await SignInAsync(user, isPersistent: false);
                         return RedirectToLocal(returnUrl);
                     }
@@ -394,7 +395,7 @@ namespace BusinessInsights.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Search", "Facebook");
             }
         }
 

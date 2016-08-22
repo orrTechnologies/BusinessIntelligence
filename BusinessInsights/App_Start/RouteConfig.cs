@@ -13,6 +13,12 @@ namespace BusinessInsights
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //Redirect home controller
+            routes.MapRoute(
+                name: "HomeRedirect",
+                url: "Home",
+                defaults: new { controller = "Facebook", action = "Search" }
+             );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

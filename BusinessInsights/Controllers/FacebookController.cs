@@ -42,7 +42,7 @@ namespace BusinessInsights.Controllers
  
         //new AlchemyLanguageClient("0ea4a12f30bf7745d366f69a95deff2c478d6257")
         public FacebookController()
-            : this(new FacebookServiceFactory(), new MockAlchemyClient())
+            : this(new FacebookServiceFactory(), new AlchemyLanguageClient("0ea4a12f30bf7745d366f69a95deff2c478d6257"))
         {
             
         }

@@ -181,7 +181,6 @@
     <Compile Include="Models\FacebookPostSentimentViewModel.cs" />
     <Compile Include="Models\FacebookSearchResultList.cs" />
     <Compile Include="Factories\FacebookServiceFactory.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Factories\IFacebookServiceFactory.cs" />
     <Compile Include="Extensions\DynamicExtension.cs" />
     <Compile Include="Extensions\HtmlHelper.cs" />
