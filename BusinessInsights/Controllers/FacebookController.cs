@@ -39,8 +39,8 @@ namespace BusinessInsights.Controllers
                 return _serviceFactory.CreateService(HttpContext.Items["access_token"].ToString());
             }
         }
- 
-        //new AlchemyLanguageClient("0ea4a12f30bf7745d366f69a95deff2c478d6257")
+
+        //TODO: Using poor mans IOC, replace with proper IOC Container.
         public FacebookController()
             : this(new FacebookServiceFactory(), new AlchemyLanguageClient("0ea4a12f30bf7745d366f69a95deff2c478d6257"))
         {
@@ -104,7 +104,6 @@ namespace BusinessInsights.Controllers
                 analysedPosts.Add(analysedPost);
             }
 #region Charts
-            var js = new JavaScriptSerializer();
             //ChartData
 
             //Donut Chart Data:
