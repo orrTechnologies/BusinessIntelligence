@@ -63,11 +63,6 @@ namespace BusinessInsights.Controllers
             return View("SearchResultList", results);
         }
 
-        private IEnumerable<FacebookPostViewModel> SampleData()
-        {
-            return new List<FacebookPostViewModel>();
-        } 
-
         #region Dashboard
         public async Task<ActionResult> Dashboard(string id)
         {
