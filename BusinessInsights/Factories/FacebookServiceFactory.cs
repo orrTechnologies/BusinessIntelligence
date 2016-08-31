@@ -1,13 +1,18 @@
-using BusinessInsights.Controllers;
+using System.Web;
 using BusinessInsights.Services;
 
 namespace BusinessInsights.Factories
 {
     public class FacebookServiceFactory : IFacebookServiceFactory
     {
-        public IFacebookService CreateService(string token)
+        /// <summary>
+        /// Creates a facebook service. 
+        /// Uses token stored in HttpContext.
+        /// </summary>
+        /// <returns>IFacebookService</returns>
+        public IFacebookService CreateService()
         {
-            return new FacebookService().SetToken(token);
+            return new FacebookService(HttpContext.Current.Items["access_token"].ToString());
         }
     }
 }

@@ -1,26 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
-using System.Web.UI.WebControls;
 using AlchemyLanguage;
-using BusinessInsights.Extensions;
 using BusinessInsights.Factories;
 using BusinessInsights.Filters;
 using BusinessInsights.Models;
 using BusinessInsights.Services;
-using Facebook;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security.Facebook;
 using Newtonsoft.Json;
 
 namespace BusinessInsights.Controllers
@@ -31,14 +18,6 @@ namespace BusinessInsights.Controllers
     {
         private readonly IFacebookServiceFactory _serviceFactory;
         private readonly IAlchemyLanguageClient _alchemyClient;
-
-        private IFacebookService FacebookService
-        {
-            get
-            {
-                return _serviceFactory.CreateService(HttpContext.Items["access_token"].ToString());
-            }
-        }
 
         //TODO: Using poor mans IOC, replace with proper IOC Container.
         public FacebookController()
@@ -54,20 +33,20 @@ namespace BusinessInsights.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(string query)
+        public async Task<ActionResult> Search(string query)
         {
             if (String.IsNullOrWhiteSpace(query))
                 return new ViewResult();
 
-            IEnumerable<FacebookSearchPagesViewModel> results = FacebookService.Search(query);
+            IEnumerable<FacebookSearchPagesViewModel> results = await _serviceFactory.CreateService().Search(query);
             return View("SearchResultList", results);
         }
 
         #region Dashboard
         public async Task<ActionResult> Dashboard(string id)
         {
-            Task<IEnumerable<FacebookPostViewModel>> taggedPostTask = FacebookService.Post(id);
-            Task<FacebookProfileViewModel> pageTask = FacebookService.Profile(id);
+            Task<IEnumerable<FacebookPostViewModel>> taggedPostTask = _serviceFactory.CreateService().Post(id);
+            Task<FacebookProfileViewModel> pageTask = _serviceFactory.CreateService().Profile(id);
 
             IEnumerable<FacebookPostViewModel> taggedPost = await taggedPostTask;
             //Page: Get page view models directly from facebookService

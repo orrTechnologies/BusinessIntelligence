@@ -13,11 +13,10 @@ namespace BusinessInsights.Services
     public class FacebookService : IFacebookService
     {
         private readonly FacebookClient _client = new FacebookClient();
-        public FacebookService() { }
-        public IFacebookService SetToken(string token)
+
+        public FacebookService(string token)
         {
             _client.AccessToken = token;
-            return this;
         }
         /// <summary>
         /// Not in use.
@@ -38,10 +37,10 @@ namespace BusinessInsights.Services
         /// </summary>
         /// <param name="searchQuery">Term to search</param>
         /// <returns>A collection of pages that match search query</returns>
-        public IEnumerable<FacebookSearchPagesViewModel> Search(string searchQuery)
+        public async Task<IEnumerable<FacebookSearchPagesViewModel>> Search(string searchQuery)
         {
             var request = String.Format("search?q={0}&type=page&fields=name,id,picture", searchQuery);
-            dynamic result = _client.Get(request);
+            dynamic result = await _client.GetTaskAsync(request);
 
             List<FacebookSearchPagesViewModel> searchPages = new List<FacebookSearchPagesViewModel>();
             foreach (dynamic page in result.data)

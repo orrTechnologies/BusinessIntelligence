@@ -46,7 +46,7 @@
     <Compile Include="DocSentiment.cs" />
     <Compile Include="IAlchemyLanguage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AlchemyLanguage.cs" />
+    <Compile Include="AlchemyLanguageClient.cs" />
     <Compile Include="SentimentAnalysis.cs" />
     <Compile Include="SentimentType.cs" />
   </ItemGroup>

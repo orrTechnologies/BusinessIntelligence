@@ -4,6 +4,6 @@ namespace BusinessInsights.Factories
 {
     public interface IFacebookServiceFactory
     {
-        IFacebookService CreateService(string token);
+        IFacebookService CreateService();
     }
 }
