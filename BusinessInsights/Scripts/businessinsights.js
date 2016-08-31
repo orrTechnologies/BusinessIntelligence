@@ -6,6 +6,11 @@
             window.location = ('/facebook/search/?query=' + searchTerm);
         }
     });
+    $('#page-search-input-box input').keydown(function (e) {
+        if (e.keyCode == 13) {
+            $('#form').submit();
+        }
+    });
 
         Morris.Donut(donutChartParams);
         Morris.Area(areaChartParams);

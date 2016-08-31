@@ -20,12 +20,20 @@ namespace BusinessInsights.Controllers
         private readonly IAlchemyLanguageClient _alchemyClient;
 
         //TODO: Using poor mans IOC, replace with proper IOC Container.
+        /// <summary>
+        /// Uses default FacebookServiceFactory, and AlchemyLanguageClient implementations 
+        /// new AlchemyLanguageClient("0ea4a12f30bf7745d366f69a95deff2c478d6257")
+        /// </summary>
         public FacebookController()
-            : this(new FacebookServiceFactory(), new AlchemyLanguageClient("0ea4a12f30bf7745d366f69a95deff2c478d6257"))
+            : this(new FacebookServiceFactory(), new MockAlchemyClient())
         {
             
         }
-
+        /// <summary>
+        /// Allows for injection of dependencies 
+        /// </summary>
+        /// <param name="serviceFactory">IFacebookServiceFactory implementation</param>
+        /// <param name="alchemyClient">IAlchemyLanguageClient implementation</param>
         public FacebookController(IFacebookServiceFactory serviceFactory = null, IAlchemyLanguageClient alchemyClient = null)
         {
             _serviceFactory = serviceFactory;

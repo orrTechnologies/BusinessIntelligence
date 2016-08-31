@@ -5,8 +5,10 @@ using System.Linq;
 using System.Reflection;
 using BusinessInsights.Attributes;
 
+//TODO: Automapper should be able to handle convesion of dynamic objects, replaceing the need for this.
 namespace BusinessInsights.Extensions
 {
+
     public class propertycontainer
     {
         public string facebookfield { get; set; }

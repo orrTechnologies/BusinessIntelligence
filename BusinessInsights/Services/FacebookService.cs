@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web.Services.Description;
-using BusinessInsights.Attributes;
 using BusinessInsights.Extensions;
 using BusinessInsights.Models;
 using Facebook;
-using Microsoft.Ajax.Utilities;
 
 namespace BusinessInsights.Services
 {
@@ -14,6 +11,7 @@ namespace BusinessInsights.Services
     {
         private readonly FacebookClient _client = new FacebookClient();
 
+        //TODO: This class is curently directly returning view models. We should be returning domain specific facebook models, and converting them to view models in the controller. 
         public FacebookService(string token)
         {
             _client.AccessToken = token;
