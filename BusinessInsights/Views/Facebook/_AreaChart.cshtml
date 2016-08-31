@@ -23,10 +23,11 @@
         data: areaChartData,
         xkey: 'Day',
         ykeys: ['PositivePostCount', 'NegativePostCount'],
+        ymax: 10,
         labels: ['Positive Post', 'Negative Post'],
-        pointSize: 2,
+        pointSize: 4,
         hideHover: 'auto',
         resize: true
     }
-
+    Morris.Line(areaChartParams);
 </script>
